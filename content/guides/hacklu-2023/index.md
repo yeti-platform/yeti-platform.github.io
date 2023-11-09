@@ -11,4 +11,4 @@ We gave a workshop at HackLu 2023 about setting up Yeti to talk to
 here (will be ported to this site soon):
 
 - [Infrastructure Setup](https://docs.google.com/document/d/1TKqOleH2rdtPjybUt3PYybJ7RrH59kqaHnmywJhRPGk/edit#heading=h.rbid6qmh936d)
-- [Investigation](https://docs.google.com/document/d/1GDrwON67L8VvZsxU6W5ma1tXBeJfi2694WjqumdTXYI/edit#heading=h.hjhqi687lyei)
+- [Investigation](https://docs.google.com/document/d/1DE3RyDV4GxzAzyu4stT3XPHhJf6a8TrWpTLBSE2DfR0/edit#heading=h.hjhqi687lyei)
