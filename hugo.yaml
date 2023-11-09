@@ -1,0 +1,49 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: Yeti documentation
+
+module:
+  imports:
+    - path: github.com/imfing/hextra
+
+menu:
+  main:
+    - name: Documentation
+      pageRef: /docs
+      weight: 1
+    - name: Guides
+      pageRef: /guides
+      weight: 2
+    # - name: Blog
+    #   pageRef: /blog
+    #   weight: 3
+    - name: Search
+      weight: 4
+      params:
+        type: search
+    - name: GitHub
+      weight: 5
+      url: "https://github.com/yeti-platform/yeti"
+      params:
+        icon: github
+  sidebar:
+    - name: More
+      params:
+        type: separator
+      weight: 1
+    - name: "Yeti on GitHub ↗"
+      url: "https://github.com/yeti-platform/yeti"
+      weight: 2
+
+params:
+  navbar:
+    displayTitle: true
+    displayLogo: false
+    logo:
+      path: images/logo.svg
+      dark: images/logo-dark.svg
+      link: /
+      width: 40
+      height: 20
+
+copyright: "© 2023"
