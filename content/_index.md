@@ -5,9 +5,9 @@ draft: false
 ---
 
 Yeti aims to bridge the gap between CTI and DFIR practitioners by providing a
-Forensics Intelligence platform for DFIR teams. It was born out of frustration
+Forensics Intelligence platform and pipeline for DFIR teams. It was born out of frustration
 of having to answer the question "where have I seen this artifact before?" or
-"how do I search for this IOC in my timeline?"
+"how do I search for IOCs related to this threat (or all threats?) in my timeline?"
 
 {{< cards >}} {{< card link="/docs" title="Documentation" icon="book-open" >}}
 {{< card link="/guides" title="Guides" icon="search-circle" >}}
@@ -24,6 +24,7 @@ In a nutshell, Yeti allows you to:
   DFIR artifacts.
 - Let CTI analysts focus on adding intelligence rather than worrying about
   machine-readable export formats.
+- Incorporate your own data sources, analytics, and logic very easily.
 
 This is done by:
 
