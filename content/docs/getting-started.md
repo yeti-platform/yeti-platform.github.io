@@ -2,6 +2,7 @@
 title: Getting started
 date: 2023-11-05T17:40:05Z
 draft: false
+weight: 1
 ---
 
 This section describes how to get an instance of Yeti up and running in no time.
@@ -15,7 +16,11 @@ To install Yeti, you need to have the following tools installed on your system:
 - git
 - Docker
 
-## Starting docker containers
+## Steps
+
+{{% steps %}}
+
+### 1. Start Docker containers
 
 ```bash
 git clone https://github.com/yeti-platform/yeti-docker
@@ -35,7 +40,7 @@ compose file starts up 4 containers:
 It will also create a Docker network called `yeti_network` through which all
 containers can talk to one another.
 
-## Create an admin user
+### 2. Create an admin user
 
 You'll need to create an admin user to be able to log into the Yeti web
 interface:
@@ -43,3 +48,9 @@ interface:
 ```bash
 docker compose exec api yetictl create-user USERNAME PASSWORD --admin
 ```
+
+### 3. Open the Yeti web UI
+
+Head to http://localhost:80/ and log in with the credentials you just created.
+
+{{% /steps %}}
