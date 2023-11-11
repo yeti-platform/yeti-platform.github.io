@@ -96,7 +96,7 @@ played your cards (or tags) right, and the `relevant_tag` is the same as an
 Entity's `relevant_tags`, then the Observable will be linked to the Entity
 through the Tag Graph.
 
-### Indicators
+### Power in automation
 
 However, it's more likely that observable matching will happen through
 automation. The web UI can only match text-based observables that you submit
