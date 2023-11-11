@@ -10,4 +10,5 @@ of it.
 
 {{< cards >}}
   {{< card link="getting-started" title="Getting started" icon="play" >}}
+  {{< card link="key-concepts" title="Key concepts" icon="key" >}}
 {{< /cards >}}
