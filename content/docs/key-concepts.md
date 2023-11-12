@@ -109,13 +109,15 @@ Timesketch sketch, extract observables from matching events, add them to Yeti
 and tag them with the indicator's `relevant_tags`, or the associated entitie's
 `relevant_tags`. You can also tag Timesketch events in the same way.
 
-## Automation
+## Tasks
 
 Yeti thrives on automation. The API provides powerful functions to navigate
-through the graph, tag objects, create links between them, etc.
+through the graph, tag objects, create links between them, etc., and much of
+that is lost when doing things through the UI.
 
-This is fully exploited by Yeti's `Tasks`. Tasks are Python scripts that can be
-run on a schedule, or on-demand. Tasks are split into three categories:
+The potential for automation is fully unlocked by Yeti's `Tasks`. Tasks are
+Python scripts that can be run on a schedule, or on-demand. Tasks are split into
+three categories, described below.
 
 ### Analytics
 
@@ -146,8 +148,8 @@ Jinja template. The reason this is not done in real-time is that it can be a
 quite resource-intensive operation for larger datasets.
 
 In terms of code, Exports are a bit different: unlike Feeds or Analytics, they
-don't contain that much unique logic, and so it's possible to just create
-new ones from the UI.
+don't contain that much unique logic, and so it's possible to just create new
+ones from the UI.
 
 ### Custom automation
 
