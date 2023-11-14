@@ -14,6 +14,9 @@ of having to answer the question "where have I seen this artifact before?" or
 {{< card link="https://github.com/yeti-platform/yeti" title="Code" icon="github" >}}
 {{< /cards >}}
 
+
+{{< figure src="scattered.png" title="Example of ScatteredSpider as imported through MITRE ATT&CK" >}}
+
 ## What is Yeti?
 
 In a nutshell, Yeti allows you to:
