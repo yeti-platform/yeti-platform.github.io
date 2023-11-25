@@ -38,3 +38,11 @@ This is done by:
   and enrichment (think malware sandbox).
 - Export the data in user-defined formats so that they can be ingested by
   third-party applications (SIEM, DFIR platforms).
+
+## Some screenshots
+
+{{< figure src="attack.png" title="Example: Intrusion sets as imported through the MITRE ATT&CK feed" >}}
+
+{{< figure src="vuln.png" title="Example: CVE-2023-46604 " >}}
+
+{{< figure src="intrusionset.png" title="Example: TeamTNT intrusion set" >}}
