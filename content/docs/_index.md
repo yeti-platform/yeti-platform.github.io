@@ -11,4 +11,5 @@ of it.
 {{< cards >}}
   {{< card link="getting-started" title="Getting started" icon="play" >}}
   {{< card link="key-concepts" title="Key concepts" icon="key" >}}
+  {{< card link="api" title="API docs" icon="cog" >}}
 {{< /cards >}}
