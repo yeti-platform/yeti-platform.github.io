@@ -46,7 +46,7 @@ You'll need to create an admin user to be able to log into the Yeti web
 interface:
 
 ```bash
-docker compose exec api yetictl create-user USERNAME PASSWORD --admin
+docker compose run --rm api create-user USERNAME PASSWORD --admin
 ```
 
 ### 3. Open the Yeti web UI
