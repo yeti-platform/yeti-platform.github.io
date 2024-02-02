@@ -31,7 +31,7 @@ In a nutshell, Yeti allows you to:
 
 This is done by:
 
-- Storing technical and tactical CTI (observables, TTPs, campagins, etc.) from
+- Storing technical and tactical CTI (observables, TTPs, campaigns, etc.) from
   internal or external systems.
 - Being a backend for DFIR-related queries: Yara signatures, Sigma rules, DFIQ.
 - Providing a web API to automate queries (think incident management platform)
