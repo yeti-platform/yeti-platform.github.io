@@ -18,4 +18,4 @@ them!
 
 ## Official guides
 
-- [Hack Lu 2023]({{< ref "guides/hacklu-2023/index.md" >}})
+- [Using Yeti Indicators in Timesketch]({{< ref "guides/indicators-timesketch/_index.md" >}})
