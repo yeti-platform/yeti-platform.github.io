@@ -18,4 +18,4 @@ them!
 
 ## Official guides
 
-- [Hack Lu 2023]({{< ref "guides/hacklu-2023/index.md" >}})
+- [Hack Lu 2023]({{< ref "guides/hacklu-2023/_index.md" >}})

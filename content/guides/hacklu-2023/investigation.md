@@ -33,31 +33,32 @@ Plaso files can be found
 powerful your workstation is.** Now's a great time to take a break, or follow
 along with the instructions for Yeti below.
 
-## Adding some intel to Yeti
+## Add some intel to Yeti
 
 Before we jump into the analysis of our timelines, it's a good idea to add some
 intel first to Yeti to get you started. We're going to document what a
 successful SSH login looks like in our logs.
 
-### Add a "SSH login" attack pattern
+### New Attack Pattern: "SSH login"
 
-Head to [http://localhost:80/](http://localhost:80/) and click on Log in (no
-credentials needed). Then head to "**Entities**", and on the right-side panel
-click "**New entity**". From the dropdown menu, select "**Attack pattern**".
+Head to [http://localhost:80/](http://localhost:80/) and log in with the
+credentials you set up before. If you've followed the infrastructure setup
+guide, this should be `yeti / yeti`. Then head to "**Entities**", and on the
+right-side panel click "**+ New entity**". From the dropdown menu, select
+"**Attack pattern**".
 
 - Name: `Successful SSH login`
-- Relevant tags: `login` (these will be generated as tags as soon as you hit
-  comma)
+- Kill chain phases: `exploitation`
 - Description: Optional.
 
 Click "save". Congrats, you've added your first attack pattern to Yeti! You
-should see it pop up on the right side.
+should be redirected to the corresponding details page.
 
-### Add an indicator for the SSH login attack pattern
+### New indicator: "Successful SSH login"
 
 Now head over to "Indicators" in the menu bar. We're going to add a "**regular
 expression**" that captures what we're looking for. Like previously, head to
-"**new indicator**"
+"**+ New indicator**"
 
 Pick "**Regular expression**" from the dropdown, and fill it in as follows:
 
@@ -70,13 +71,17 @@ Pick "**Regular expression**" from the dropdown, and fill it in as follows:
 
 Click "save". Now, time to link the indicator to our attack pattern!
 
+On the indicator page, click the "New link" button in the Info box on the
+top-right corner. Search for "Successful SSH login". Set link type to
+"indicates" and click "Save". You should have
+
 Click on your freshly added indicator, and on the right hand side of the page,
 search for "SSH" in "Related entities", and click "Link". You should have
 something like this:
 
-![](screenshots/screen3.png)
+![](screenshots/linked-ssh-to-indicator.png)
 
-## Analyzing the evidence
+## Analyze the evidence
 
 **Some context**: as in every forensic investigation, context is critical. What
 are these files you've been given to analyze? What are you even looking for?
@@ -89,7 +94,7 @@ and start browsing the data you have. What do you notice? What are the three
 timelines we've collected? Hint: look at the `data_type` field in the events
 from each timeline.
 
-## Running the Tagger analyzer
+## Run the Tagger analyzer
 
 In the search bar, type `_exists_:yara_match`. You'll see a list of events
 appear, all coming from the same timeline (why?). Open one of them, and look for
@@ -134,7 +139,7 @@ This can come in very handy if you want to, for example, look at the latest ELF
 files that were created on that disk. (this would yield interesting results for
 this investigation)
 
-## Running the Yeti analyzer
+## Run the Yeti analyzer
 
 Repeat the process for running analyzers, but this time select all available
 timelines. Head down to the "Yeti CTI indicators" analyzer and click the Play
@@ -150,29 +155,32 @@ You can click on the "Indicator matches for Successful SSH login" or the
 "successful-ssh-login" tag to filter out events highlighted by Yeti. Or, search
 for `tag:"successful-ssh-login"` in the search bar.
 
-## Finding the intrusion vector
+## Find the intrusion vector
 
 What stands out of these SSH logins? Play around with timesketch to figure out
 what happened around the time of each connection. Are they legitimate?
 
-## Finding the malware
+## Find the malware
 
 Start by pivoting on the time the SSH connection happens, and clear the search
 to look at events. What previous sketch automation can we leverage to find
 interesting things (maybe the `executables_ELF` tag is interesting?)
 
-## Annotating intelligence
+## Annotate intelligence (Timesketch)
 
 How do we keep track of intelligence we've been finding in Timesketch? Look at
-the "Threat intelligence" section on the left. You'll see it already has one
-item, which was added by our first Yeti analyzer run. It's not super relevant,
-but you'll see where we're going with this.
+the **"Threat intelligence" section** on the left.
 
-So far you have:
+![](screenshots/threat-intelligence-bar.png)
 
-- The hash of the malware
-- It's location in the filesystem
+You'll see it already has one item, which was added by our first Yeti analyzer
+run. It's not super relevant, but you'll see where we're going with this.
+
+In terms of IOCs, so far you should have found:
+
 - The IP used for logging into the system
+- The location of the malware in the filesystem
+- Its hash
 
 Let's add all of these to the intelligence section of timesketch. Click the +
 button, and add away.
@@ -198,12 +206,12 @@ Head to Yeti, then "Automation" in the menubar, then "Feeds". Scroll down to
 where you can see the Timesketch feed, enable it, and click on the refresh icon
 to run it. After a few seconds, it should look like this:
 
-![](screenshots/screen8.png)
+![](screenshots/timesketch-feed-yeti.png)
 
 Head to the Entities menu, and you'll see a brand new Investigation appear in
 there. Click on it, and you'll see some information imported from Timesketch:
 
-![](screenshots/screen9.png)
+![](screenshots/imported-yeti-investigation.png)
 
 You'll note that the "Accepted password" indicator that we collected doesn't
 show up here - it's because Yeti doesn't know what kind of observable it is.
@@ -214,24 +222,27 @@ document this.
 
 **Create a new entity of type Malware:**
 
-- Name: xmrig
-- Relevant tags: xmrig
-- Family: cryptominer
+- Name: `xmrig`
+- Family: `cryptominer`
+- Aliases: Optional.
+- Description: Optional.
 
-You also want to document the dropped filename (notice the typo for dhcpd) as
-you think it can be a quick win for analysts that may run into similarly
-compromised systems.
+You also want to document the dropped filename (notice the typo: `dhpcd` instead
+of `dhcpd`) as you think it can be a quick win for analysts that may run into
+similarly compromised systems.
 
 **Add an indicator of type regex:**
 
-- name: typo'd dhcpd
-- pattern: `(/[a-z]+)+/dhpcd`
-- relevant tags: typo
-- Diamond model: capability
+- Name: `typo'd dhcpd`
+- Pattern: `(/[a-z]+)+/dhpcd`
+- Location: `filesystem`
+- Relevant tags: `typo`
+- Diamond model: `capability`
 
-Save it, and link it to the xmrig malware. You should have something like this:
+Save it, then link it to the xmrig entity you just created. You should have
+something like this.
 
-![](screenshots/screen10.png)
+![](screenshots/typo-with-link.png)
 
 Try it out! Re-run the Timesketch Yeti analyzer, and see if it produced any new
 tags on your sketch.
@@ -245,44 +256,9 @@ filesystem paths to the weird dhpcd binary)
 
 Finally, now that you have some good documentation, imagine you're someone who
 comes across this weird dhpcd binary, and you want to know if it's been seen
-before. Head to the Yeti Search page, and paste your path in the search box:
+before. Head to the Yeti Search page, and paste the typo'd path in the search box:
 
-![](screenshots/screen12.png)
-
-## Getting more evidence
-
-This will make you use GRR and dfTimewolf. Please follow the instructions in the
-[infrastructure setup guide](/guides/hacklu-2023/infrastructure_setup) to get a
-GRR server up and running on your workstation (also using Docker).
-
-### First steps with dfTimewolf
-
-If you followed the instructions above and in , you **create a dfTimewolf config
-file** similar to this one in your home directory:
-
-```{filename="~/.dftimewolfrc"}
-{
-    "grr_server_url": "http://grr-server:8000",
-    "grr_username": "admin",
-    "grr_password": "demo",
-    "endpoint": "http://timesketch-dev:5000",
-    "username": "dev",
-    "password": "dev"
-}
-```
-
-### Run dfTimewolf
-
-These commands will automatically pull the image from
-[https://registry.hub.docker.com/r/tomchop/dftimewolf](https://registry.hub.docker.com/r/tomchop/dftimewolf)
-
-To collect the `BrowsingHistory` artifact from your host (you probably won't
-find anything), but have a look at
-[https://github.com/ForensicArtifacts/artifacts/tree/main/data](https://github.com/ForensicArtifacts/artifacts/tree/main/data)
-to see what makes sense to pull
-
-Alternatively, you can also upload a file system timeline of the docker host to
-Timesketch:
+![](screenshots/match-screenshot.png)
 
 ## Some tips in case you get stuck (spoilers ahead!)
 
