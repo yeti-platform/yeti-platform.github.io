@@ -7,7 +7,7 @@ draft: false
 # First steps
 
 Make sure you've followed the
-[infrastructure setup guide](/guides/hacklu-2023/infrastructure_setup) before
+[infrastructure setup guide](/guides/indicators-timesketch/infrastructure_setup) before
 following up with this page.
 
 ## Upload evidence to Timesketch
