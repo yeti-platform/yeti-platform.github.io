@@ -1,7 +1,7 @@
 ---
 title: Talks
-date: 2023-11-09T11:40:07+01:00
-draft: true
+date: 2024-02-19
+draft: false
 ---
 
 ## Jupytherton 24 - Hunting the Yeti on Jupyter
