@@ -14,9 +14,9 @@ menu:
     - name: Guides
       pageRef: /guides
       weight: 2
-    # - name: Blog
-    #   pageRef: /blog
-    #   weight: 3
+    - name: Blog
+      pageRef: /blog
+      weight: 3
     - name: Search
       weight: 4
       params:
@@ -45,5 +45,8 @@ params:
       link: /
       width: 40
       height: 20
+  blog:
+    list:
+      displayTags: true
 
 copyright: "© 2023"
