@@ -8,6 +8,59 @@ cascade:
 
 ## Before we start
 
+Yeti offers two installation methods: Kubernetes or Docker. Choose your
+preferred method and follow the instructions in this guide.
+
+## K8s Installation
+
+If you are new to Kubernetes, consider
+reviewing the OSDFIR Infrastructure [getting started guide](https://github.com/google/osdfir-infrastructure/blob/main/docs/getting-started.md).
+
+To get started, ensure you have
+[Helm](https://helm.sh/docs/intro/install/) and
+[Kubectl](https://kubernetes.io/docs/tasks/tools/) installed and are
+authenticated to your Kubernetes cluster.
+
+> **Note**: For local installations, use
+[Minikube](https://minikube.sigs.k8s.io/docs/start/) or
+[KIND](https://kind.sigs.k8s.io/docs/user/quick-start/).
+
+Once complete, add the repo containing the Helm charts as follows:
+
+```console
+helm repo add osdfir-charts https://google.github.io/osdfir-infrastructure
+```
+
+If you had already added this repo earlier, run `helm repo update` to retrieve
+the latest versions of the packages. You can then run
+`helm search repo osdfir-charts` to see the available charts.
+
+To install the Yeti and Timesketch chart using a release name of `my-release`:
+
+```console
+helm install my-release osdfir-charts/osdfir-infrastructure \
+--set global.turbinia.enabled=false
+```
+
+To uninstall the chart:
+
+```console
+helm uninstall my-release
+```
+
+For instructions on installing Yeti along with our other integrated DFIR tools,
+refer to the main [OSDFIR Infrastructure](https://github.com/google/osdfir-infrastructure)
+repository. Additionally, refer to the Yeti Helm chart
+[README](https://github.com/google/osdfir-infrastructure/tree/main/charts/yeti)
+for a comprehensive list of configuration options.
+
+### That’s it!
+
+You’re now ready to start your investigation with Timesketch and Yeti. Head to
+to see the rest of the workshop.
+
+## Docker Installations
+
 - You’ll be running two set of docker compose "projects". One for Yeti, and one
   for timesketch;
 - You’ll connect the Timesketch and Yeti containers to the same network;
@@ -19,8 +72,6 @@ You can cleanup everything at the end of the workshop by doing
 
 To stay organized, we recommend you create a directory called
 `yeti_platform_guide` and run all these commands from there.
-
-## Start & configure docker containers
 
 ### Installing Yeti
 
@@ -116,9 +167,9 @@ docker compose exec timesketch celery -A timesketch.lib.tasks.celery worker --lo
 Open [http://localhost:5000](http://localhost:5000) or
 [http://127.0.0.1:5000](http://127.0.0.1:5000) and login with dev / dev
 
-## Connecting Yeti and Timesketch
+### Connecting Yeti and Timesketch
 
-### Docker network connectivity
+#### Docker network connectivity
 
 List networks
 
@@ -193,12 +244,12 @@ Note: In Docker, you can refer to hosts on the network by their container name (
 `yeti-frontend`, what you see in the result of `docker ps -a`) or by "service
 name" in the respective compose file (e.g. `frontend`)
 
-## Getting GRR set up (optional)
+### Getting GRR set up (optional)
 
 Good docs at
 [https://grr-doc.readthedocs.io/en/latest/installing-grr-server/via-docker.html](https://grr-doc.readthedocs.io/en/latest/installing-grr-server/via-docker.html)
 
-### Installing the GRR server
+#### Installing the GRR server
 
 ```bash
 docker run \
@@ -211,7 +262,7 @@ docker run \
 
 Wait a few minutes, and you should be good to go (this takes a while)
 
-### Installing GRR clients
+#### Installing GRR clients
 
 You can either install GRR clients on the docker container itself, or any host
 you want, provided that they can reach the server through the

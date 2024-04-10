@@ -16,7 +16,8 @@ Plaso files can be found
 [here](https://drive.google.com/drive/folders/1AA8mOkUOOxQj-IjbvN9MPNzCA4CJRkT4).
 
 - Head to [http://localhost:5000/](http://localhost:5000/), sign in with
-  `dev/dev`
+  `dev/dev`, or if using k8s installation retrieve the password through the post
+  installation notes (e.g. `helm status my-release`).
 - Click on "Blank Sketch", and give it an appropriate name (e.g. `YetiGuide`)
 - Click on "Add Timeline", and select the one of the plaso files you downloaded.
   - The file will upload and you will be sent to the "Sketch view"
@@ -42,8 +43,9 @@ successful SSH login looks like in our logs.
 ### New Attack Pattern: "SSH login"
 
 Head to [http://localhost:80/](http://localhost:80/) and log in with the
-credentials you set up before. If you've followed the infrastructure setup
-guide, this should be `yeti / yeti`. Then head to "**Entities**", and on the
+credentials you set up before. If you've followed the Docker installation, this
+should be `yeti / yeti`. For K8s installation, the password can be retrieved
+from the post installation notes. Then head to "**Entities**", and on the
 right-side panel click "**+ New entity**". From the dropdown menu, select
 "**Attack pattern**".
 
