@@ -8,9 +8,9 @@ cascade:
 
 ## Before we start
 
-Yeti offers two installation methods: [Kubernetes](#k8s-installation) (K8s) or [Docker](#docker-installation) (through
-`docker-compose`). Choose your preferred method and follow the instructions in
-this guide.
+Yeti offers two installation methods: [Kubernetes](#k8s-installation) (K8s) or
+[Docker](#docker-installation) (through `docker-compose`). Choose your preferred
+method and follow the instructions in this guide.
 
 ## K8s Installation
 
@@ -245,7 +245,6 @@ You should see these two containers in the result of
 
 {{< callout type="info" >}}
 
-
 **Optional**: You can test that the hosts can ping each other by doing
 
 ```console
@@ -258,13 +257,11 @@ ping timesketch-dev
 
 {{< callout type="info" >}}
 
-
-**Note**: In Docker, you can refer to hosts on the network by their container name
-(e.g. `yeti-frontend`, what you see in the result of `docker ps -a`) or by
+**Note**: In Docker, you can refer to hosts on the network by their container
+name (e.g. `yeti-frontend`, what you see in the result of `docker ps -a`) or by
 "service name" in the respective compose file (e.g. `frontend`)
 
 {{< /callout >}}
-
 
 ### Getting GRR set up (optional)
 
