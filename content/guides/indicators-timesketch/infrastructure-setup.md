@@ -44,12 +44,17 @@ If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages. You can then run
 `helm search repo osdfir-charts` to see the available charts.
 
-To install the Yeti and Timesketch chart using a release name of `my-release`:
+To install the Yeti and Timesketch chart, pick a release name of your chose, for
+example, using a release name of `my-release`, run the following:
 
 ```console
 helm install my-release osdfir-charts/osdfir-infrastructure \
 --set global.turbinia.enabled=false
 ```
+
+> **Note:** Using `--set global.turbinia.enabled` disables the Turbinia
+deployment from being installed given it is not being used as part of this guide
+and is enabled by default otherwise.
 
 To uninstall the chart:
 
