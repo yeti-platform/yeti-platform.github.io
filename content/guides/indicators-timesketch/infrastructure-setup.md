@@ -8,25 +8,96 @@ cascade:
 
 ## Before we start
 
-- You’ll be running two set of docker compose "projects". One for Yeti, and one
-  for timesketch;
-- You’ll connect the Timesketch and Yeti containers to the same network;
+Yeti offers two installation methods: [Kubernetes](#k8s-installation) (K8s) or
+[Docker](#docker-installation) (through `docker-compose`). Choose your preferred
+method and follow the instructions in this guide.
+
+## K8s Installation
+
+If you are new to Kubernetes, consider reviewing the OSDFIR Infrastructure
+[getting started guide](https://github.com/google/osdfir-infrastructure/blob/main/docs/getting-started.md).
+
+### Prerequisites
+
+To get started, ensure you have [Helm](https://helm.sh/docs/intro/install/) and
+[Kubectl](https://kubernetes.io/docs/tasks/tools/) installed and are
+authenticated to your Kubernetes cluster.
+
+{{< callout type="info" >}}
+
+**Note**: If you don't have a remote k8s setup, you can still use this
+[Minikube](https://minikube.sigs.k8s.io/docs/start/) or
+[KIND](https://kind.sigs.k8s.io/docs/user/quick-start/) to install Yeti and
+Timesketch locally.
+
+{{< /callout >}}
+
+### Pull chart and install release
+
+Once complete, add the repo containing the Helm charts as follows:
+
+```console
+helm repo add osdfir-charts https://google.github.io/osdfir-infrastructure
+```
+
+If you had already added this repo earlier, run `helm repo update` to retrieve
+the latest versions of the packages. You can then run
+`helm search repo osdfir-charts` to see the available charts.
+
+To install the Yeti and Timesketch chart, pick a release name of your chose, for
+example, using a release name of `my-release`, run the following:
+
+```console
+helm install my-release osdfir-charts/osdfir-infrastructure \
+--set global.turbinia.enabled=false
+```
+
+{{< callout type="info" >}}
+
+**Note:** Using `--set global.turbinia.enabled` disables the Turbinia
+deployment from being installed given it is not being used as part of this
+guide and is enabled by default otherwise.
+
+{{< /callout >}}
+
+To uninstall the chart:
+
+```console
+helm uninstall my-release
+```
+
+For instructions on installing Yeti along with other integrated DFIR tools,
+refer to the main
+[OSDFIR Infrastructure](https://github.com/google/osdfir-infrastructure)
+repository. Additionally, refer to the Yeti Helm chart
+[README](https://github.com/google/osdfir-infrastructure/tree/main/charts/yeti)
+for a comprehensive list of configuration options.
+
+### That's it!
+
+You're now ready to start your investigation with Timesketch and Yeti. Head to
+[the investigation steps](/guides/indicators-timesketch/investigation) to follow
+the rest of the guide.
+
+## Docker Installation
+
+- You'll be running two set of docker compose "projects". One for Yeti, and one
+  for Timesketch;
+- You'll connect the Timesketch and Yeti containers to the same network;
 - **ALL of the `docker compose` commands need to be run in the directory that
   have a `docker-compose.yaml` file.**
 
 You can cleanup everything at the end of the workshop by doing
-`docker compose down` on each project’s respective docker compose directory.
+`docker compose down` on each project's respective docker compose directory.
 
 To stay organized, we recommend you create a directory called
 `yeti_platform_guide` and run all these commands from there.
-
-## Start & configure docker containers
 
 ### Installing Yeti
 
 Get a release docker image started:
 
-```bash
+```console
 git clone https://github.com/yeti-platform/yeti-docker
 cd yeti-docker/prod
 docker compose up [--no-cache]
@@ -42,13 +113,13 @@ service running on [http://localhost:80/](http://localhost:80/).
 
 Next, create a Yeti user:
 
-```bash
+```console
 docker compose exec -it api /docker-entrypoint.sh create-user yeti yeti --admin
 ```
 
 The output should be:
 
-```
+```console
 User yeti succesfully created! API key: yeti:<APIKEY>
 ```
 
@@ -59,7 +130,7 @@ That API key will be used by Timesketch in the next step.
 We're going to be using a development version of Timesketch, start by cloning
 the Timesketch repository:
 
-```bash
+```console
 git clone https://github.com/google/timesketch
 ```
 
@@ -73,7 +144,7 @@ Edit `timesketch/data/timesketch.conf` to point to our deployed Yeti instance
 YETI_API_ROOT = 'http://yeti-frontend/api/v2'
 
 # API key to authenticate requests
-YETI_API_KEY = 'placeholder'  # no need as we don’t have yeti auth enabled,
+YETI_API_KEY = 'placeholder'  # no need as we don't have yeti auth enabled,
 but the TS analyzer checks this
 
 # Labels to narrow down indicator selection
@@ -85,7 +156,7 @@ YETI_INDICATOR_LABELS = ['domain']  # unused
 
 Go to the docker directory, and run docker compose up:
 
-```bash
+```console
 cd timesketch/docker/dev
 docker compose up
 ```
@@ -101,14 +172,14 @@ run the following commands:
 
 Shell 1:
 
-```bash
+```console
 cd timesketch/docker/dev
 docker compose exec timesketch gunicorn --reload -b 0.0.0.0:5000 --log-file - --timeout 120 timesketch.wsgi:application
 ```
 
 Shell 2:
 
-```bash
+```console
 cd timesketch/docker/dev
 docker compose exec timesketch celery -A timesketch.lib.tasks.celery worker --loglevel=info
 ```
@@ -116,13 +187,13 @@ docker compose exec timesketch celery -A timesketch.lib.tasks.celery worker --lo
 Open [http://localhost:5000](http://localhost:5000) or
 [http://127.0.0.1:5000](http://127.0.0.1:5000) and login with dev / dev
 
-## Connecting Yeti and Timesketch
+### Connecting Yeti and Timesketch
 
-### Docker network connectivity
+#### Docker network connectivity
 
 List networks
 
-```
+```console
 $ docker network ls
 NETWORK ID     NAME           DRIVER    SCOPE
 eac246a7279a   bridge         bridge    local
@@ -139,8 +210,8 @@ b8882de5a0bf   yeti_network   bridge    local
 - `yeti_network` → Docker compose network for Yeti. The name of the network was
   specified in the yeti docker-compose.yaml file.
 
-```bash
-$ docker network inspect yeti_network
+```console
+docker network inspect yeti_network
 ```
 
 This section should be somewhere in the output of the above command:
@@ -173,34 +244,42 @@ network). We need this so that:
 - The Yeti task service (running on `yeti-tasks`) can feed off the Timesketch
   API
 
-```bash
-$ docker network connect dev_default yeti-tasks
-$ docker network connect dev_default yeti-frontend
+```console
+docker network connect dev_default yeti-tasks
+docker network connect dev_default yeti-frontend
 ```
 
 You should see these two containers in the result of
 `docker network inspect dev_default`
 
-Optional: You can test that the hosts can ping each other by doing
+{{< callout type="info" >}}
 
-```bash
+**Optional**: You can test that the hosts can ping each other by doing
+
+```console
 docker exec -it yeti-frontend /bin/bash
 apt update && apt install inetutils-ping -y
 ping timesketch-dev
 ```
 
-Note: In Docker, you can refer to hosts on the network by their container name (e.g.
-`yeti-frontend`, what you see in the result of `docker ps -a`) or by "service
-name" in the respective compose file (e.g. `frontend`)
+{{< /callout >}}
 
-## Getting GRR set up (optional)
+{{< callout type="info" >}}
+
+**Note**: In Docker, you can refer to hosts on the network by their container
+name (e.g. `yeti-frontend`, what you see in the result of `docker ps -a`) or by
+"service name" in the respective compose file (e.g. `frontend`)
+
+{{< /callout >}}
+
+### Getting GRR set up (optional)
 
 Good docs at
 [https://grr-doc.readthedocs.io/en/latest/installing-grr-server/via-docker.html](https://grr-doc.readthedocs.io/en/latest/installing-grr-server/via-docker.html)
 
-### Installing the GRR server
+#### Installing the GRR server
 
-```bash
+```console
 docker run \
   --name grr-server \
   -e EXTERNAL_HOSTNAME=localhost \
@@ -211,17 +290,17 @@ docker run \
 
 Wait a few minutes, and you should be good to go (this takes a while)
 
-### Installing GRR clients
+#### Installing GRR clients
 
 You can either install GRR clients on the docker container itself, or any host
 you want, provided that they can reach the server through the
 `EXTERNAL_HOSTNAME` variable you provided above.
 
-```bash
+```console
 docker exec -it grr-server /bin/bash
 ```
 
-```bash
+```console
 root@b7d5a20b496e:/usr/share/grr-server/executables/installers# ls -la
 total 117152
 drwxr-xr-x 2 root root     4096 Oct 18 12:00 .
@@ -236,18 +315,18 @@ drwxr-xr-x 1 root root     4096 Oct 18 11:56 ..
 
 You can either:
 
-* Install one of these on the server (the already running docker container)
+- Install one of these on the server (the already running docker container)
 
-If the Docker install doesn’t make the client appear on your client list, launch
+If the Docker install doesn't make the client appear on your client list, launch
 it manually:
 
-```bash
+```console
 /usr/sbin/grrd --config=/usr/lib/grr/grr_3.4.6.7_amd64/grrd.yaml
 ```
 
 - or just copy one of the clients and run it on your host.
 
-```bash
+```console
 docker cp grr-server:/usr/share/grr-server/executables/installers/grr_3.4.6.7_amd64.pkg /tmp
 ```
 
@@ -257,23 +336,24 @@ docker cp grr-server:/usr/share/grr-server/executables/installers/grr_3.4.6.7_am
 
 Then connect the `grr-server` to the rest of your network:
 
-```bash
+```console
 docker network connect dev_default grr-server
 ```
 
-### That’s it!
+### That's it!
 
-You’re now ready to start your investigation with Timesketch and Yeti. Head to
-to see the rest of the workshop.
+You're now ready to start your investigation with Timesketch and Yeti. Head to
+[the investigation steps](/guides/indicators-timesketch/investigation) to follow
+the rest of the guide.
 
 ## Troubleshooting
 
 ### `Error response from daemon: Ports are not available: exposing port TCP 127.0.0.1:5001 -> 0.0.0.0:0: listen tcp 127.0.0.1:5001: bind: address already in use`
 
 This means you have a service listening on a port required by the container.
-It’s common that this happens if you have other docker containers running, or
+It's common that this happens if you have other docker containers running, or
 SSH tunneling with port forwarding going on. VSCode will sometimes forward ports
-for you if you’re doing remote development.
+for you if you're doing remote development.
 
 ### `ModuleNotFoundError: No module named 'timesketch'`
 
@@ -283,7 +363,7 @@ installing)
 
 ### `"Service "tasks" is not running" when running a Docker compose command`
 
-It probably means you’re running the command from a directory that doesn’t
+It probably means you're running the command from a directory that doesn't
 contain a docker compose file (or that contains the wrong docker compose file).
 Double-check the directories:
 
