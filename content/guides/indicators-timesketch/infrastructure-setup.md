@@ -52,9 +52,13 @@ helm install my-release osdfir-charts/osdfir-infrastructure \
 --set global.turbinia.enabled=false
 ```
 
-> **Note:** Using `--set global.turbinia.enabled` disables the Turbinia
-deployment from being installed given it is not being used as part of this guide
-and is enabled by default otherwise.
+{{< callout type="info" >}}
+
+**Note:** Using `--set global.turbinia.enabled` disables the Turbinia
+deployment from being installed given it is not being used as part of this
+guide and is enabled by default otherwise.
+
+{{< /callout >}}
 
 To uninstall the chart:
 
