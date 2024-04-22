@@ -124,14 +124,13 @@ Fortunately, there is a simple Timesketch analyzer that can extract these fields
 and tag events with its contents.
 
 Click on the "+" next to "**Analyzer results**" on the left hand side of the
-page. In the search bar, select the PlasoHasherTask timeline (you can select
-other timelines as well, but they don't have that field set, so running the
-analyzer on those will have no effect and will unnecessarily consume resources).
+page. In the search bar, select all timelines (you could filter out the
+timelines that do not contain these attributes to save some resources.)
 
 **Search for the "Tagger" analyzer**, and click on the Play button next to it.
 The analyzer takes a few seconds to run, and you'll see "**Analyzer results
 (1)**" on the left hand side of the screen. Click through Analyzer results →
-Tagger → PlasoHasherTask to see all results:
+Tagger to see all results:
 
 ![](screenshots/screen4.png)
 
@@ -154,8 +153,13 @@ this investigation)
 ## Run the Yeti analyzer
 
 Repeat the process for running analyzers, but this time select all available
-timelines. Head down to the "Yeti CTI indicators" analyzer and click the Play
-button. After a few seconds, you should see this:
+timelines. Head down to the "Yeti forensics triage indicators" analyzer and
+click the Play button.
+
+This analyzer will focus on Yeti's triage entities, unroll the graph of
+indicators linked to them, and search for those indicators in your sketch.
+
+After a few seconds, you should see this:
 
 ![](screenshots/an.png)
 
@@ -212,11 +216,11 @@ As an investigator, this kind of work is good because then CTI teams can
 capitalize on this and disseminate that intelligence to other teams (or future
 you when you run into a similar case again)
 
-## Importing intelligence into Yeti
+## Importing and documenting CTI in Yeti
 
-Head to Yeti, then "Automation" in the menubar, then "Feeds". Scroll down to
-where you can see the Timesketch feed, enable it, and click on the refresh icon
-to run it. After a few seconds, it should look like this:
+Head to Yeti, then "Automation" in the menu bar, then "Feeds". Search for the
+Timesketch feed, enable it, and click on the refresh icon to run it. After a few
+seconds, it should look like this:
 
 ![](screenshots/timesketch-feed-yeti.png)
 
@@ -232,47 +236,60 @@ Your reverse engineering of the sample, as well as the tags provided by the
 forensic analyst, tells you that this is xmrig, a common cryptominer. Time to
 document this.
 
-**Create a new entity of type Malware:**
+### Create a new Malware entity
 
 - Name: `xmrig`
 - Family: `cryptominer`
 - Aliases: Optional.
 - Description: Optional.
 
-You also want to document the dropped filename (notice the typo: `dhpcd` instead
-of `dhcpd`) as you think it can be a quick win for analysts that may run into
-similarly compromised systems.
+You also want to document the dropped filenames in Yeti so that they can get
+quickly flagged by an analyst running into similarly compromised systems. What
+you choose to document is really up to you, but one interesting pattern is to
+look for is filesystem entries that contain `c3pool`.
 
-**Add an indicator of type regex:**
+### Create a new regex Indicator
 
-- Name: `typo'd dhcpd`
-- Pattern: `(/[a-z]+)+/dhpcd`
+- Name: `c3pool files`
+- Pattern: `(/[a-z0-9]+)+/c3pool/[^/]+`
 - Location: `filesystem`
-- Relevant tags: `typo`
+- Relevant tags: `c3pool`
 - Diamond model: `capability`
 
-Save it, then link it to the xmrig entity you just created. You should have
-something like this.
+### Link the two obejcts
 
-![](screenshots/typo-with-link.png)
+The way the Timesketch analyzer looks for malware indicators is similar to the
+triage indicators, except it will start with entities of type "malware" (no
+matter what they're tagged with). We still need to link the malware entity to
+its appropriate indicator, so head to the xmrig page and use the "Link object"
+button to link it to your freshly created indicator.
 
-Try it out! Re-run the Timesketch Yeti analyzer, and see if it produced any new
-tags on your sketch.
+You should have something like this
+
+![](screenshots/xmrig-with-link.png)
+
+### Run the analyzer
+
+Try it out! Head back to your sketch and this time run the
+`Yeti CTI malware indicators` analyzer, and see if it produced any new tags on
+your sketch.
 
 ![](screenshots/screen11.png)
 
 Click on the xmrig tag, or go through the saved search, and you'll find many
-other goodies such as cronjobs that are related to your investigation. You'll
-see that the intelligence page has been populated with new findings (mostly the
-filesystem paths to the weird dhpcd binary)
+other goodies such as bash files that are related to your investigation.
+**You'll see that the intelligence page has been populated with new findings**
+(mostly the filesystem paths to the `c3pool` directory). At this point, you can
+try re-running the Timesketch feed in Yeti to import those elements.
 
 Finally, now that you have some good documentation, imagine you're someone who
-comes across this weird dhpcd binary, and you want to know if it's been seen
+comes across this weird c3pool directory, and you want to know if it's been seen
 before. Head to the Yeti Search page, and paste the typo'd path in the search
 box:
 
 ![](screenshots/match-screenshot.png)
 
+<!--
 ## Some tips in case you get stuck (spoilers ahead!)
 
 ### Analysis of plaso files
@@ -343,4 +360,4 @@ See search results → dhcpd typo
 ### Leveraging Yeti from Timesketch
 
 Run Yeti analyzer, look at all the tagged events, star the ones we think are
-interesting.
+interesting. -->
