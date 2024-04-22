@@ -7,8 +7,8 @@ draft: false
 # First steps
 
 Make sure you've followed the
-[infrastructure setup guide](/guides/indicators-timesketch/infrastructure-setup) before
-following up with this page.
+[infrastructure setup guide](/guides/indicators-timesketch/infrastructure-setup)
+before following up with this page.
 
 ## Upload evidence to Timesketch
 
@@ -37,8 +37,8 @@ along with the instructions for Yeti below.
 ## Add some intel to Yeti
 
 Before we jump into the analysis of our timelines, it's a good idea to add some
-intel first to Yeti to get you started. We're going to document what a
-successful SSH login looks like in our logs.
+intel first to Yeti to get you started. We're going to document what a SSH
+accepted login looks like in our logs.
 
 ### New Attack Pattern: "SSH login"
 
@@ -49,14 +49,14 @@ from the post installation notes. Then head to "**Entities**", and on the
 right-side panel click "**+ New entity**". From the dropdown menu, select
 "**Attack pattern**".
 
-- Name: `Successful SSH login`
+- Name: `SSH accepted login`
 - Kill chain phases: `exploitation`
 - Description: Optional.
 
 Click "save". Congrats, you've added your first attack pattern to Yeti! You
 should be redirected to the corresponding details page.
 
-### New indicator: "Successful SSH login"
+### New indicator: "SSH accepted login"
 
 Now head over to "Indicators" in the menu bar. We're going to add a "**regular
 expression**" that captures what we're looking for. Like previously, head to
@@ -73,13 +73,23 @@ Pick "**Regular expression**" from the dropdown, and fill it in as follows:
 
 Click "save". Now, time to link the indicator to our attack pattern!
 
-On the indicator page, click the "New link" button in the Info box on the
-top-right corner. Search for "Successful SSH login". Set link type to
-"indicates" and click "Save". You should have
+### Tag the attack pattern and link it to the indicator
 
-Click on your freshly added indicator, and on the right hand side of the page,
-search for "SSH" in "Related entities", and click "Link". You should have
-something like this:
+Head back to the details page of the attack pattern you just created.
+
+In the "Tags" box on the right of the page, add the tag `triage` and click save.
+This tag will be used by Timesketch to filter out entities that should be taken
+into account for the triaging process.
+
+Then, link the attack apttern to the indicator you just created. On the
+top-right corner, click "Link object" in the Info box on the top-right corner.
+Start typing "SSH accepted login". Set link type to "indicates" and click
+"Save".
+
+That way, Timesketch will select all entities that have the triage tag, and
+"unroll" their graph looking for connected indicators.
+
+The final result should look like this:
 
 ![](screenshots/linked-ssh-to-indicator.png)
 
@@ -153,7 +163,7 @@ The main search bar also has new additions:
 
 ![](screenshots/screen7.png)
 
-You can click on the "Indicator matches for Successful SSH login" or the
+You can click on the "Indicator matches for SSH accepted login" or the
 "successful-ssh-login" tag to filter out events highlighted by Yeti. Or, search
 for `tag:"successful-ssh-login"` in the search bar.
 
@@ -258,7 +268,8 @@ filesystem paths to the weird dhpcd binary)
 
 Finally, now that you have some good documentation, imagine you're someone who
 comes across this weird dhpcd binary, and you want to know if it's been seen
-before. Head to the Yeti Search page, and paste the typo'd path in the search box:
+before. Head to the Yeti Search page, and paste the typo'd path in the search
+box:
 
 ![](screenshots/match-screenshot.png)
 
