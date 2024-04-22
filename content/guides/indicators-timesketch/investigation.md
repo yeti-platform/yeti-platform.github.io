@@ -229,12 +229,9 @@ there. Click on it, and you'll see some information imported from Timesketch:
 
 ![](screenshots/imported-yeti-investigation.png)
 
-You'll note that the "Accepted password" indicator that we collected doesn't
-show up here - it's because Yeti doesn't know what kind of observable it is.
-
-Your reverse engineering of the sample, as well as the tags provided by the
-forensic analyst, tells you that this is xmrig, a common cryptominer. Time to
-document this.
+The filename gives us a solid clue of what the malware in question could be. If
+it didn’t, you’d probably hand it off to your reverse engineering team to tell
+you what it is. This is xmrig, a common cryptominer. Time to document this.
 
 ### Create a new Malware entity
 
@@ -256,7 +253,7 @@ look for is filesystem entries that contain `c3pool`.
 - Relevant tags: `c3pool`
 - Diamond model: `capability`
 
-### Link the two obejcts
+### Link the two objects
 
 The way the Timesketch analyzer looks for malware indicators is similar to the
 triage indicators, except it will start with entities of type "malware" (no
@@ -264,11 +261,11 @@ matter what they're tagged with). We still need to link the malware entity to
 its appropriate indicator, so head to the xmrig page and use the "Link object"
 button to link it to your freshly created indicator.
 
-You should have something like this
+You should have something like this:
 
 ![](screenshots/xmrig-with-link.png)
 
-### Run the analyzer
+### Run the Yeti CTI analyzer
 
 Try it out! Head back to your sketch and this time run the
 `Yeti CTI malware indicators` analyzer, and see if it produced any new tags on
@@ -280,7 +277,7 @@ Click on the xmrig tag, or go through the saved search, and you'll find many
 other goodies such as bash files that are related to your investigation.
 **You'll see that the intelligence page has been populated with new findings**
 (mostly the filesystem paths to the `c3pool` directory). At this point, you can
-try re-running the Timesketch feed in Yeti to import those elements.
+try re-running the Timesketch feed in Yeti to import these new elements.
 
 Finally, now that you have some good documentation, imagine you're someone who
 comes across this weird c3pool directory, and you want to know if it's been seen
