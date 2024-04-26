@@ -15,6 +15,15 @@ To install Yeti, you need to have the following tools installed on your system:
 
 - git
 - Docker
+  - Use the official Docker install instructions:
+    https://docs.docker.com/engine/install/debian/
+  - Make sure you install the compose plugin as `docker compose` and not
+    `docker-compose`.
+
+```console
+$ docker compose version
+Docker Compose version v2.25.0
+```
 
 ## Steps
 
