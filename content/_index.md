@@ -4,7 +4,8 @@ date: 2023-11-05T17:39:58Z
 draft: false
 ---
 
-{{< figure src="logo-black.png" width="200" class="yeti-logo">}}
+{{< figure src="logo-black.png" width="200" class="yeti-logo dark:hidden">}}
+{{< figure src="logo-white.png" width="200" class="yeti-logo hidden dark:block">}}
 
 Yeti aims to bridge the gap between CTI and DFIR practitioners by providing a
 Forensics Intelligence platform and pipeline for DFIR teams. It was born out of

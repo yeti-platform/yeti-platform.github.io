@@ -43,10 +43,12 @@ params:
       path: logo-black-notext.png
       dark: logo-white-notext.png
       link: /
-      width: 40
-      height: 20
+      width: 30
   blog:
     list:
       displayTags: true
+  theme:
+    default: system
+    displayToggle: true
 
 copyright: "© 2024"
