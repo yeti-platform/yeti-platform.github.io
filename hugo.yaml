@@ -30,7 +30,7 @@ menu:
     - name: More
       params:
         type: separator
-      weight: 1x
+      weight: 1
     - name: "Yeti on GitHub ↗"
       url: "https://github.com/yeti-platform/yeti"
       weight: 2
