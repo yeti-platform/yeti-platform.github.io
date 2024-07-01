@@ -40,7 +40,7 @@ Before we jump into the analysis of our timelines, it's a good idea to add some
 intel first to Yeti to get you started. We're going to document what a SSH
 accepted login looks like in our logs.
 
-### New Attack Pattern: "SSH login"
+### New Attack Pattern: `SSH login`
 
 Head to [http://localhost:80/](http://localhost:80/) and log in with the
 credentials you set up before. If you've followed the Docker installation, this
@@ -49,18 +49,18 @@ from the post installation notes. Then head to "**Entities**", and on the
 right-side panel click "**+ New entity**". From the dropdown menu, select
 "**Attack pattern**".
 
-- Name: `SSH accepted login`
+- Name: `SSH login`
 - Kill chain phases: `exploitation`
 - Description: Optional.
 
-Click "save". Congrats, you've added your first attack pattern to Yeti! You
+Click "**save**". Congrats, you've added your first attack pattern to Yeti! You
 should be redirected to the corresponding details page.
 
-### New indicator: "SSH accepted login"
+### New indicator: `SSH accepted login`
 
-Now head over to "Indicators" in the menu bar. We're going to add a "**regular
-expression**" that captures what we're looking for. Like previously, head to
-"**+ New indicator**"
+Now head over to "**Indicators**" in the menu bar. We're going to add a
+"**regular expression**" that captures what we're looking for. Like previously,
+head to "**+ New indicator**"
 
 Pick "**Regular expression**" from the dropdown, and fill it in as follows:
 
@@ -71,7 +71,7 @@ Pick "**Regular expression**" from the dropdown, and fill it in as follows:
 - Diamond model: `capability`
 - Description: Optional
 
-Click "save". Now, time to link the indicator to our attack pattern!
+Click "**save**". Now, time to link the indicator to our attack pattern!
 
 ### Tag the attack pattern and link it to the indicator
 
@@ -91,7 +91,7 @@ The final result should look like this:
 
 ![](screenshots/linked-ssh-to-indicator.png)
 
-## Analyzing the evidence
+## Analyze the evidence
 
 **Some context**: as in every forensic investigation, context is critical. What
 are these files you've been given to analyze? What are you even looking for?
@@ -193,7 +193,7 @@ Start by pivoting on the time the SSH connection happens, and clear the search
 to look at all events. What previous sketch automation can we leverage to find
 interesting things (maybe the `executables_ELF` tag is interesting?)
 
-## Annotate intelligence (Timesketch)
+## Annotate intelligence in Timesketch
 
 How do we keep track of intelligence we've been finding in Timesketch? Look at
 the **"Threat intelligence" section** on the left.
@@ -224,11 +224,11 @@ As an investigator, this kind of work is good because then CTI teams can
 capitalize on this and disseminate that intelligence to other teams (or future
 you when you run into a similar case again)
 
-## Importing and documenting CTI in Yeti
+## Import and document CTI in Yeti
 
-Head to Yeti, then "Automation" in the menu bar, then "Feeds". Search for the
-Timesketch feed, enable it, and click on the refresh icon to run it. After a few
-seconds, it should look like this:
+Head to Yeti, then **Automation** in the menu bar, then **Feeds**. Search for
+the Timesketch feed, enable it, and click on the refresh icon to run it (enabled
+feeds run periodically as well). After a few seconds, it should look like this:
 
 ![](screenshots/timesketch-feed-yeti.png)
 
@@ -241,7 +241,7 @@ The filename gives us a solid clue of what the malware in question could be. If
 it didn’t, you’d probably hand it off to your reverse engineering team to tell
 you what it is. This is xmrig, a common cryptominer. Time to document this.
 
-### Create a new Malware entity
+### New Malware: `xmrig`
 
 - Name: `xmrig`
 - Family: `cryptominer`
@@ -253,7 +253,7 @@ quickly flagged by an analyst running into similarly compromised systems. What
 you choose to document is really up to you, but one interesting pattern is to
 look for is filesystem entries that contain `c3pool`.
 
-### Create a new regex Indicator
+### New indicator: `c3pool files`
 
 - Name: `c3pool files`
 - Pattern: `(/[a-z0-9]+)+/c3pool/[^/ ]+`
@@ -276,12 +276,12 @@ You should have something like this:
 ### Run the Yeti malware analyzer
 
 Try it out! Head back to your sketch and this time run the
-`Yeti malware indicators` analyzer, and see if it produced any new tags on
-your sketch.
+`Yeti malware indicators` analyzer, and see if it produced any new tags on your
+sketch.
 
 ![](screenshots/screen11.png)
 
-Click on the xmrig tag, or go through the saved search, and you'll find many
+Click on the `xmrig` tag, or go through the saved search, and you'll find many
 other goodies such as bash files that are related to your investigation.
 **You'll see that the intelligence page has been populated with new findings**
 (mostly the filesystem paths to the `c3pool` directory). At this point, you can
@@ -289,14 +289,31 @@ try re-running the Timesketch feed in Yeti to import these new elements.
 
 Finally, now that you have some good documentation, imagine you're someone who
 comes across this weird c3pool directory, and you want to know if it's been seen
-before. Head to the Yeti Search page, and paste the path in the search
-box:
+before. Head to the Yeti **Search** page, and paste the path in the search box:
 
 ![](screenshots/match-screenshot.png)
 
-## Leveraging intelligence from previous investigations
+## Leveraging CTI from previous investigations
 
+Now that you've documented threat intelligence in Timesketch and imported it
+into Yeti, Timesketch can also use Yeti to search for indicators that appeared
+in previous investigations.
 
+Your investigation Entity in Yeti should look like this (re-run the Timesketch
+feed if it doesn't):
+
+![](screenshots/investigation-observables.png)
+
+Imagine another analyst runs into a similar case in the future.
+
+To simulate this, we're going to **create a new sketch in Timesketch and upload
+the same plaso files**. Once that's done, run the **Yeti Investigations
+intelligence** analyzer on all timelines of the new sketch.
+
+You'll notice many more events tagged this time around. If you've documented the
+attacker IP address, you'll see that all activity from that IP address will have
+been tagged. What does this tell you about how the attackers got onto the
+system?
 
 <!--
 ## Some tips in case you get stuck (spoilers ahead!)
