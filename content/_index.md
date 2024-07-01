@@ -4,19 +4,25 @@ date: 2023-11-05T17:39:58Z
 draft: false
 ---
 
+{{< figure src="logo-black.png" width="200" class="yeti-logo">}}
 
 Yeti aims to bridge the gap between CTI and DFIR practitioners by providing a
 Forensics Intelligence platform and pipeline for DFIR teams. It was born out of frustration
 of having to answer the question "where have I seen this artifact before?" or
 "how do I search for IOCs related to this threat (or all threats?) in my timeline?"
 
+{{< rawhtml >}}
+<br />
+<br />
+<br />
+<div class="yeti-separator"></div>
+{{< /rawhtml >}}
 
 {{< cards >}} {{< card link="/docs" title="Documentation" icon="book-open" >}}
 {{< card link="/guides" title="Guides" icon="search-circle" >}}
 {{< card link="https://github.com/yeti-platform/yeti" title="Code" icon="github" >}}
 {{< /cards >}}
 
-![Yeti logo](logo.png)
 
 ## What is Yeti?
 
