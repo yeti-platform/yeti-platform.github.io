@@ -54,9 +54,9 @@ helm install my-release osdfir-charts/osdfir-infrastructure \
 
 {{< callout type="info" >}}
 
-**Note:** Using `--set global.turbinia.enabled` disables the Turbinia
-deployment from being installed given it is not being used as part of this
-guide and is enabled by default otherwise.
+**Note:** Using `--set global.turbinia.enabled` disables the Turbinia deployment
+from being installed given it is not being used as part of this guide and is
+enabled by default otherwise.
 
 {{< /callout >}}
 
@@ -97,11 +97,16 @@ To stay organized, we recommend you create a directory called
 
 Get a release docker image started:
 
-```console
+```bash
 git clone https://github.com/yeti-platform/yeti-docker
 cd yeti-docker/prod
-docker compose up [--no-cache]
+docker compose -p yeti up
+```
 
+You can use the `--no-cache` option in the `docker compose up` command to
+rebuild the images from scratch.
+
+```bash
 # If you're running an outdated version of Yeti
 # pull the latest images:
 docker pull yetiplatform/yeti-frontend:latest
@@ -109,21 +114,22 @@ docker pull yetiplatform/yeti:latest
 ```
 
 This will create and run the latest release Yeti containers, and start a web
-service running on [http://localhost:80/](http://localhost:80/).
-
-Next, create a Yeti user:
-
-```console
-docker compose exec -it api /docker-entrypoint.sh create-user yeti yeti --admin
-```
-
-The output should be:
+service running on [http://localhost:80/](http://localhost:80/). You can check
+the service is up now, but you'll need to create a user to continue:
 
 ```console
-User yeti succesfully created! API key: yeti:<APIKEY>
+docker compose exec -p yeti -it api /docker-entrypoint.sh create-user yeti yeti --admin
 ```
 
-That API key will be used by Timesketch in the next step.
+The output should contain the line:
+
+```console
+User yeti successfully created! API key: yeti:<APIKEY>
+```
+
+Head to [http://localhost:80/](http://localhost:80/) and log in with the
+credentials of the user you just created. Take note of that API key, as it will
+be used by Timesketch in the next step.
 
 ### Installing Timesketch
 
@@ -158,10 +164,10 @@ Go to the docker directory, and run docker compose up:
 
 ```console
 cd timesketch/docker/dev
-docker compose up
+docker compose -p timesketch up
 ```
 
-After a while, you should see:
+This can take a moment. After a few minutes, you should see:
 
 ```
 timesketch-dev  | Timesketch development server is ready!
@@ -174,14 +180,14 @@ Shell 1:
 
 ```console
 cd timesketch/docker/dev
-docker compose exec timesketch gunicorn --reload -b 0.0.0.0:5000 --log-file - --timeout 120 timesketch.wsgi:application
+docker compose -p timesketch exec timesketch gunicorn --reload -b 0.0.0.0:5000 --log-file - --timeout 120 timesketch.wsgi:application
 ```
 
 Shell 2:
 
 ```console
 cd timesketch/docker/dev
-docker compose exec timesketch celery -A timesketch.lib.tasks.celery worker --loglevel=info
+docker compose -p timesketch exec timesketch celery -A timesketch.lib.tasks.celery worker --loglevel=info
 ```
 
 Open [http://localhost:5000](http://localhost:5000) or
@@ -195,20 +201,19 @@ List networks
 
 ```console
 $ docker network ls
-NETWORK ID     NAME           DRIVER    SCOPE
-eac246a7279a   bridge         bridge    local
-7b5dc0d746e8   dev_default    bridge    local
-5a4924bb4dbd   host           host      local
-49c78c06da77   none           null      local
-b8882de5a0bf   yeti_network   bridge    local
+NETWORK ID     NAME                 DRIVER    SCOPE
+e0e2da34fe54   bridge               bridge    local
+aff34be18958   host                 host      local
+4ef6dd47f376   none                 null      local
+d5c1f8727703   timesketch_default   bridge    local
+82ac0824ce2a   yeti_network         bridge    local
 ```
 
-- `dev_default` → Docker compose network for "dev", which is the timesketch
-  Docker compose setup. The name of the network comes from the docker compose
-  "project name", which is determined by the name of the directory the
-  docker-compose.yaml file lies in.
+- `timesketch_default` → Docker compose network for our Timesketch compose
+  project. The network name prefix was specified in the `-p` flag when running
+  the `docker compose up` command.
 - `yeti_network` → Docker compose network for Yeti. The name of the network was
-  specified in the yeti docker-compose.yaml file.
+  specified in the Yeti docker-compose.yaml file.
 
 ```console
 docker network inspect yeti_network
@@ -236,7 +241,7 @@ This section should be somewhere in the output of the above command:
 }
 ```
 
-Connect the `yeti-tasks` and `yeti-frontend` to `dev_default` (the Timesketch
+Connect the `yeti-tasks` and `yeti-frontend` to `timesketch_default` (the Timesketch
 network). We need this so that:
 
 - The timesketch server can query the Yeti API server (running on
@@ -245,12 +250,12 @@ network). We need this so that:
   API
 
 ```console
-docker network connect dev_default yeti-tasks
-docker network connect dev_default yeti-frontend
+docker network connect timesketch_default yeti-tasks
+docker network connect timesketch_default yeti-frontend
 ```
 
 You should see these two containers in the result of
-`docker network inspect dev_default`
+`docker network inspect timesketch_default`
 
 {{< callout type="info" >}}
 
