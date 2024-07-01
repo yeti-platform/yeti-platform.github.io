@@ -1,6 +1,6 @@
 baseURL: https://yeti-platform.io/
 languageCode: en-us
-title: Yeti documentation
+title: "Yeti: Your Everyday Threat Intelligence"
 
 module:
   imports:
@@ -30,7 +30,7 @@ menu:
     - name: More
       params:
         type: separator
-      weight: 1
+      weight: 1x
     - name: "Yeti on GitHub ↗"
       url: "https://github.com/yeti-platform/yeti"
       weight: 2
@@ -38,10 +38,10 @@ menu:
 params:
   navbar:
     displayTitle: true
-    displayLogo: false
+    displayLogo: true
     logo:
-      path: images/logo.svg
-      dark: images/logo-dark.svg
+      path: logo-black-notext.png
+      dark: logo-white-notext.png
       link: /
       width: 40
       height: 20
@@ -49,4 +49,4 @@ params:
     list:
       displayTags: true
 
-copyright: "© 2023"
+copyright: "© 2024"
