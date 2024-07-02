@@ -38,13 +38,17 @@ If you are new to Kubernetes, consider reviewing the OSDFIR Infrastructure
 
   {{< tab >}}
 
-  Use Chocolatey:
+  Use Chocolatey  to install mikibube and helm:
 
   ```bash
   choco install minikube
   ```
 
-  {{< /tab >}}
+  ```bash
+  choco install kubernetes-helm
+  ```
+
+{{< /tab >}}
 
 {{< /tabs >}}
 
