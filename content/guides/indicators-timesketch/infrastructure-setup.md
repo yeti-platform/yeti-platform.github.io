@@ -158,7 +158,7 @@ service running on [http://localhost:80/](http://localhost:80/). You can check
 the service is up now, but you'll need to create a user to continue:
 
 ```console
-docker compose exec -p yeti -it api /docker-entrypoint.sh create-user yeti yeti --admin
+docker compose -p yeti exec -it api /docker-entrypoint.sh create-user yeti yeti --admin
 ```
 
 The output should contain the line:
