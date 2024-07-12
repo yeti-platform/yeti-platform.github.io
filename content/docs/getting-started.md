@@ -60,6 +60,7 @@ docker compose run --rm api create-user USERNAME PASSWORD --admin
 
 ### 3. Open the Yeti web UI
 
-Head to [http://localhost:80/](http://localhost:80/) and log in with the credentials you just created.
+Head to [http://localhost:80/](http://localhost:80/) and log in with the
+credentials you just created.
 
 {{% /steps %}}

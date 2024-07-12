@@ -14,52 +14,47 @@ method and follow the instructions in this guide.
 
 ## Using Kubernetes / minikube
 
-Kubernetes (k8s) / minikube will get you started in no time, thanks to the OSDFIR
-Helm chart (you can read more about it
+Kubernetes (k8s) / minikube will get you started in no time, thanks to the
+OSDFIR Helm chart (you can read more about it
 [here](https://osdfir.blogspot.com/2024/04/welcoming-yeti-to-osdfir-infrastructure.html)).
 If you are new to Kubernetes, consider reviewing the OSDFIR Infrastructure
 [getting started guide](https://github.com/google/osdfir-infrastructure/blob/main/docs/getting-started.md).
-
-
 
 ### Prerequisites
 
 {{< tabs items="macOS,Windows" >}}
 
-  {{< tab >}}
+{{< tab >}}
 
-  Use Homebrew:
+Use Homebrew:
 
-  ```bash
-  brew install helm minikube kubectl
-  ```
+```bash
+brew install helm minikube kubectl
+```
 
-  {{< /tab >}}
+{{< /tab >}}
 
-  {{< tab >}}
+{{< tab >}}
 
-  Use Chocolatey  to install mikibube and helm:
+Use Chocolatey to install mikibube and helm:
 
-  ```bash
-  choco install minikube
-  ```
+```bash
+choco install minikube
+```
 
-  ```bash
-  choco install kubernetes-helm
-  ```
+```bash
+choco install kubernetes-helm
+```
 
 {{< /tab >}}
 
 {{< /tabs >}}
-
-
 
 To get started, ensure you have [Helm](https://helm.sh/docs/intro/install/) and
 [Kubectl](https://kubernetes.io/docs/tasks/tools/) installed and are
 authenticated to your Kubernetes cluster.
 
 {{< callout type="info" >}}
-
 
 **Note**: If you don't have a remote k8s setup, you can still use
 [Minikube](https://minikube.sigs.k8s.io/docs/start/) or
@@ -71,6 +66,7 @@ For minikube, you might need to run:
 ```bash
 kubectl config use-context minikube
 ```
+
 {{< /callout >}}
 
 ### Pull chart and install release
@@ -85,8 +81,8 @@ If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages. You can then run
 `helm search repo osdfir-charts` to see the available charts.
 
-To install the Yeti and Timesketch chart, pick a release name of your choice, for
-example, using a release name of `my-release`, run the following:
+To install the Yeti and Timesketch chart, pick a release name of your choice,
+for example, using a release name of `my-release`, run the following:
 
 ```console
 helm install my-release osdfir-charts/osdfir-infrastructure \
@@ -121,6 +117,7 @@ You're now ready to start your investigation with Timesketch and Yeti. Head to
 the rest of the guide.
 
 ## Using Docker and `docker compose`
+
 - You'll be running two set of docker compose "projects". One for Yeti, and one
   for Timesketch;
 - You'll connect the Timesketch and Yeti containers to the same network;
@@ -190,8 +187,7 @@ Edit `timesketch/data/timesketch.conf` to point to our deployed Yeti instance
 YETI_API_ROOT = 'http://yeti-frontend/api/v2'
 
 # API key to authenticate requests
-YETI_API_KEY = 'placeholder'  # no need as we don't have yeti auth enabled,
-but the TS analyzer checks this
+YETI_API_KEY = 'c90811fd5cd0978e2c2672332cfc712503725863c63885e90db4afe1070c5b21'  # API key from previous step
 
 # Labels to narrow down indicator selection
 YETI_INDICATOR_LABELS = ['domain']  # unused
@@ -216,7 +212,8 @@ timesketch-dev  | Timesketch development server is ready!
 Then open two terminals (it's a good idea to use tmux or something similar), and
 run the following commands:
 
-*Shell 1:*
+_Shell 1:_
+
 ```console
 cd timesketch/docker/dev
 docker compose -p timesketch exec timesketch gunicorn --reload -b 0.0.0.0:5000 --log-file - --timeout 120 timesketch.wsgi:application
@@ -224,14 +221,15 @@ docker compose -p timesketch exec timesketch gunicorn --reload -b 0.0.0.0:5000 -
 
 This will start the Timesketch web server.
 
-*Shell 2:*
+_Shell 2:_
 
 ```console
 cd timesketch/docker/dev
 docker compose -p timesketch exec timesketch celery -A timesketch.lib.tasks.celery worker --loglevel=info
 ```
 
-This will start the Timesketch Celery workers, which are used to import plaso files and run analyzers.
+This will start the Timesketch Celery workers, which are used to import plaso
+files and run analyzers.
 
 Open [http://localhost:5000](http://localhost:5000) or
 [http://127.0.0.1:5000](http://127.0.0.1:5000) and login with `dev` / `dev`
