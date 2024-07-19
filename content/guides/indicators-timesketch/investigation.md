@@ -276,7 +276,7 @@ You should have something like this:
 ### Run the Yeti malware analyzer
 
 Try it out! Head back to your sketch and this time run the
-`Yeti malware indicators` analyzer, and see if it produced any new tags on your
+`Yeti badness indicators` analyzer, and see if it produced any new tags on your
 sketch.
 
 ![](screenshots/screen11.png)
