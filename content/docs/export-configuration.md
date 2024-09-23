@@ -78,6 +78,6 @@ services:
     command: ['tasks']
 ```
 
-** note: for S3 there are tons of different environment variables to configure everything from different providers to how authentication to the buckets are done.
+** Note: For S3 there are tons of different environment variables to configure everything from different providers to how authentication to the buckets are done. Shown above is just a common pattern, not an all-encompassing one.
 
 The you can include your secret credentials in a `.env` file.
