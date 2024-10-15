@@ -88,10 +88,10 @@ services:
     command: ['tasks']
 ```
 
-\*\* Note: For S3 there are several different environment variables to configure
-everything from different providers to how authentication to the buckets are
-done and much more. Shown above is just a common pattern, not an
-all-encompassing one.
+{{< callout type="info" >}} **Note**: For S3 there are several different
+environment variables to configure everything from different providers to how
+authentication to the buckets are done and much more. Shown above is just a
+common pattern, not an all-encompassing one. {{< /callout >}}
 
 The you can include your secret credentials in a `.env` file.
 
