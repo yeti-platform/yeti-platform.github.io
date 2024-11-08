@@ -14,15 +14,18 @@ menu:
     - name: Guides
       pageRef: /guides
       weight: 2
+    - name: Developers
+      pageRef: /developers
+      weight: 3
     - name: Blog
       pageRef: /blog
-      weight: 3
-    - name: Search
       weight: 4
+    - name: Search
+      weight: 5
       params:
         type: search
     - name: GitHub
-      weight: 5
+      weight: 6
       url: "https://github.com/yeti-platform/yeti"
       params:
         icon: github
