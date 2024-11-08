@@ -20,6 +20,7 @@ in my timeline?"
 
 {{< cards >}} {{< card link="/docs" title="Documentation" icon="book-open" >}}
 {{< card link="/guides" title="Guides" icon="search-circle" >}}
+{{< card link="/developers" title="Developers" icon="code" >}}
 {{< card link="https://github.com/yeti-platform/yeti" title="Code" icon="github" >}}
 {{< /cards >}}
 
