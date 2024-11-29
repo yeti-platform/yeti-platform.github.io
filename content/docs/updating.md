@@ -11,20 +11,20 @@ breaking changes, and adjust steps accordingly!** {{< /callout >}}
 1. Backup your database
 
 ```bash
-sudo docker compose run --rm -v $(pwd)/backup:/backup arangodb arangodump --server.endpoint tcp://a
+docker compose run --rm -v $(pwd)/backup:/backup arangodb arangodump --server.endpoint tcp://a
 rangodb:8529 --server.database yeti --output-directory /backup --overwrite true
 ```
 
 2. Backup your configuration file
 
 ```bash
-sudo docker cp api:/app/yeti.conf /path/to/backup
+docker cp api:/app/yeti.conf /path/to/backup
 ```
 
 3. Stop the containers
 
 ```bash
-cd yeti-docker/prod && sudo docker compose down
+cd yeti-docker/prod && docker compose down
 ```
 
 3. Update
@@ -38,30 +38,41 @@ cd yeti-docker/prod && sudo docker compose down
 
 ```bash
 git pull
-sudo docker compose pull
+docker compose pull
 ```
 
-4. Start the containers
+4. Run migrations
 
-```bash
-sudo docker compose up -d
+Sometimes the database schema changes between versions, and you need to run a
+migration command to sync the database schema and the code that Yeti is running.
+
+To do so:
+
+```
+docker compose run --rm api /docker-entrypoint.sh arangodb-migrate
 ```
 
-5. _(optional)_ Restore database
+5. Start the containers
 
 ```bash
-sudo docker compose run --rm -v $(pwd)/backup:/backup arangodb arangorestore --server.endpoint tcp://arangodb:8529 --input-directory /backup --server.database yeti --overwrite true
+docker compose up -d
 ```
 
-6. Restore configuration file
+6. _(optional)_ Restore database
 
 ```bash
-sudo docker ps yeti.conf api:/app/
-sudo docker ps yeti.conf tasks:/app/
+docker compose run --rm -v $(pwd)/backup:/backup arangodb arangorestore --server.endpoint tcp://arangodb:8529 --input-directory /backup --server.database yeti --overwrite true
 ```
 
-7. Restart containers
+7. Restore configuration file
 
 ```bash
-sudo docker compose restarts tasks api
+docker ps yeti.conf api:/app/
+docker ps yeti.conf tasks:/app/
+```
+
+8. Restart containers
+
+```bash
+docker compose restarts tasks api
 ```
