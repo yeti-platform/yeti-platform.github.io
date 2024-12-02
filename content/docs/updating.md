@@ -49,7 +49,7 @@ migration command to sync the database schema and the code that Yeti is running.
 To do so:
 
 ```bash
-docker compose run --rm api /docker-entrypoint.sh arangodb-migrate
+docker compose run --rm api /docker-entrypoint.sh migrate-arangodb
 ```
 
 6. Start the containers
