@@ -6,7 +6,8 @@ cascade:
   type: docs
 ---
 
-In order to create task that will be triggered based on events, the following example is provided:
+In order to create task that will be triggered based on events, the following
+example is provided:
 
 ```python
 from urllib.parse import urlparse
@@ -36,19 +37,26 @@ class HostnameExtract(task.EventTask):
 taskmanager.TaskManager.register_task(HostnameExtract)
 ```
 
-The task must inherit `task.EventTask` and define `_defaults` dictionary to define its name, description and the events to acts on.
+The task must inherit `task.EventTask` and define `_defaults` dictionary to
+define its name, description and the events to acts on.
 
-When a [consumer]({{< ref "developers/events-bus.md/#consumers" >}}) matches a task based on its acts_on, task `run` method will be called with the event as argument. 
+When a [consumer]({{< ref "developers/events-bus.md#consumers" >}}) matches a
+task based on its acts_on, task `run` method will be called with the event as
+argument.
 
-In the example, this task will always receive an `EventMessage` with event of type `ObjectEvent` because the consumer will precisely match on `acts_on` which is based on `ObjectEvent`.
+In the example, this task will always receive an `EventMessage` with event of
+type `ObjectEvent` because the consumer will precisely match on `acts_on` which
+is based on `ObjectEvent`.
 
-When implementing a task with a more generic `acts_on`, the task is responsible for handling the different event types it can receive.
+When implementing a task with a more generic `acts_on`, the task is responsible
+for handling the different event types it can receive.
 
 # Testing
 
 ## Producer / Consumer
 
-To test the new event task, a new python shell is needed to execute the consumer:
+To test the new event task, a new python shell is needed to execute the
+consumer:
 
 ```shell
 poetry run python -m core.events.consumer events --debug
