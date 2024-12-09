@@ -67,6 +67,10 @@ analyzers, or other background tasks, you'll need to run the Celery workers.
 docker compose exec -it api poetry run celery -A core.taskscheduler worker --loglevel=INFO --purge -B -P threads
 ```
 
+{{< callout type="warning" >}} **While the API server picks up changes to the
+code automatically, any changes to the Celery worker or task code has to be
+reloaded manually** {{< /callout >}}
+
 ### Events tasks
 
 If you wanna work with events tasks, you need to run one or several events
@@ -75,6 +79,10 @@ consumers.
 ```bash
 docker compose exec -it api poetry run python -m core.events.consumers events
 ```
+
+{{< callout type="warning" >}} **While the API server picks up changes to the
+code automatically, any changes to the Celery worker or task code has to be
+reloaded manually** {{< /callout >}}
 
 You can adjust concurrency with `--concurrency <number_of_worker>` and enable
 debugging output with `--debug`.
