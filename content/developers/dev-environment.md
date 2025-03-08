@@ -58,6 +58,16 @@ to render the main Yeti web UI.
 docker compose exec frontend npm run dev
 ```
 
+{{< callout type="info" >}}
+
+The first time you run this, you will have to run:
+
+```bash
+docker compose exec frontend npm install
+```
+
+{{< /callout >}}
+
 ### Celery workers
 
 Celery is the task queue used by Yeti. If you plan to develop new feeds,
