@@ -34,6 +34,18 @@ Docker Compose version v2.25.0
 ```bash
 git clone https://github.com/yeti-platform/yeti-docker
 cd yeti-docker/prod
+```
+
+Check out the `.env` file and adjust default settings if needed (e.g.
+`YETI_AUTH_SECRET_KEY`)
+
+```bash
+/bin/bash ./init.sh
+```
+
+or, if you know what you're doing:
+
+```bash
 docker compose up
 ```
 
