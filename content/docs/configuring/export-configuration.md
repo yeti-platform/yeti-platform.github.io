@@ -158,8 +158,8 @@ services:
 As `s3` is an optional feature; you will need to included installation of it's
 dependencies.
 
-This can be done by adding `--extras s3` to your existing poetry install:
+This can be done by instructing `uv` to include the `s3` dependency group
 
 ```bash
-poetry install --extras s3
+uv sync --extra s3
 ```

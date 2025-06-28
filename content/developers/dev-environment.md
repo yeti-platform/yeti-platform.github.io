@@ -46,7 +46,7 @@ This is the main Yeti backend server. We'll set it up to auto-reload whenever
 changes are made to the Python code.
 
 ```bash
-docker compose exec api poetry run uvicorn core.web.webapp:app --reload --host 0.0.0.0
+docker compose exec api uv run uvicorn core.web.webapp:app --reload --host 0.0.0.0
 ```
 
 ### Frontend server
@@ -74,7 +74,7 @@ Celery is the task queue used by Yeti. If you plan to develop new feeds,
 analyzers, or other background tasks, you'll need to run the Celery workers.
 
 ```bash
-docker compose exec -it api poetry run celery -A core.taskscheduler worker --loglevel=INFO --purge -B -P threads
+docker compose exec -it api uv run celery -A core.taskscheduler worker --loglevel=INFO --purge -P threads
 ```
 
 {{< callout type="warning" >}} **While the API server picks up changes to the
@@ -87,7 +87,7 @@ If you wanna work with events tasks, you need to run one or several events
 consumers.
 
 ```bash
-docker compose exec -it api poetry run python -m core.events.consumers events
+docker compose exec -it api uv run python -m core.events.consumers events
 ```
 
 {{< callout type="warning" >}} **While the API server picks up changes to the

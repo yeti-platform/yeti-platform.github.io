@@ -59,7 +59,7 @@ To test the new event task, a new python shell is needed to execute the
 consumer:
 
 ```shell
-poetry run python -m core.events.consumer events --debug
+uv run python -m core.events.consumer events --debug
 ```
 
 Then in another shell to trigger producer when saving an observable
