@@ -50,13 +50,16 @@ docker compose up
 ```
 
 This should get Yeti up and running on port http://localhost:80/. The docker
-compose file starts up 4 containers:
+compose file starts up 8 containers:
 
-- `api` - The API server, where most of the Yeti system runs; ()
-- `frontend` - the web frontend, served by nginx; ()
-- `tasks` - a Celery scheduler;
+- `api` - The API server, where most of the Yeti system runs;
+- `frontend` - the web frontend, served by nginx;
+- `tasks` - a Celery worker for general tasks;
+- `events-tasks` - a Celery worker for event processing;
+- `tasks-beat` - a Celery beat scheduler;
 - `redis` - a Redis server;
-- `arangodb` - an ArangoDB server.
+- `arangodb` - an ArangoDB server;
+- `bloomcheck` - a Bloom filter check service.
 
 It will also create a Docker network called `yeti_network` through which all
 containers can talk to one another.
