@@ -10,3 +10,5 @@ Documentation on different configuration options.
 
 - **[File Storage Clients & Export configuration](export-configuration):** How
   to configure exports using File Storage Clients
+- **[Export Templates](export-templates):** How to write and configure the
+  Jinja-style templates used by export tasks
